@@ -1,0 +1,50 @@
+.worktree {
+  list-style-type: none;
+}
+
+.worktree--branch {
+  margin: 1ex 0 1ex 2ex;
+}
+
+.worktree--branch__title {
+  display: flex;
+  padding: 4px;
+}
+
+.worktree--branch__title:hover {
+  background: gainsboro;
+}
+
+.worktree--branch__title strong {
+  flex-grow: 1;
+}
+
+[class*="worktree--icon__"] {
+  background: lightgreen;
+  border: 1px solid lightgreen;
+  border-radius: 1ex;
+  cursor: pointer;
+  height: 20px;
+  left: 0;
+  margin-right: 4px;
+  position: relative;
+  text-align: center;
+  top: 0;
+  width: 20px;
+}
+
+[class*="worktree--icon__add-sibling"] {
+  background: lightblue;
+  border-color: lightblue;
+}
+
+[class*="worktree--icon__estimate"] {
+  background: white;
+  border-color: grey;
+  left: -4ex;
+}
+
+[class*="worktree--icon__remove-child"] {
+  background: pink;
+  border-color: pink;
+}

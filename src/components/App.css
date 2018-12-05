@@ -1,0 +1,23 @@
+.App {
+}
+
+.App-header {
+  background-color: #222;
+  color: white;
+  height: 4ex;
+  padding: 20px;
+  text-align: center;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.conatiner {
+  margin: 0 auto;
+  max-width: 120ex;
+}
