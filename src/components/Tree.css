@@ -3,48 +3,89 @@
 }
 
 .worktree--branch {
-  margin: 1ex 0 1ex 2ex;
+  margin-left: 1ex;
 }
 
 .worktree--branch__title {
+  border: 1px solid transparent;
   display: flex;
   padding: 4px;
+  transition-duration: 300ms;
+  transition-property: border, box-shadow;
 }
 
 .worktree--branch__title:hover {
-  background: gainsboro;
+  border-color: gainsboro;
+  box-shadow: 0 3px 20px 1px #999;
 }
 
 .worktree--branch__title strong {
   flex-grow: 1;
+  position: relative;
+  top: 3px;
 }
 
 [class*="worktree--icon__"] {
-  background: lightgreen;
-  border: 1px solid lightgreen;
+  background: #EEE;
+  border: 1px solid transparent;
   border-radius: 1ex;
+  color: #999;
   cursor: pointer;
-  height: 20px;
-  left: 0;
-  margin-right: 4px;
-  position: relative;
+  line-height: 1.3;
+  padding: 0 1ex;
   text-align: center;
-  top: 0;
-  width: 20px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+[class*="worktree--icon__"] + [class*="worktree--icon__"] {
+  margin-right: 1ex;
+}
+
+[class*="worktree--icon__add-child"] {
+  border-radius: 0 1ex 1ex 0;
+  transition: 300ms;
+}
+
+[class*="worktree--icon__add-child"]:hover {
+  background: lightgreen;
+  border-color: lightgreen;
 }
 
 [class*="worktree--icon__add-sibling"] {
+  border-radius: 1ex 0 0 1ex;
+}
+
+[class*="worktree--icon__add-sibling"]:hover {
   background: lightblue;
   border-color: lightblue;
 }
 
 [class*="worktree--icon__estimate"] {
   background: white;
-  border-color: grey;
-  left: -4ex;
+  border-color: #999;
+  color: #999;
+  left: -2ex;
+  line-height: 1.4;
+  margin-right: 4ex;
+  transition: 300ms;
+  width: 6ex;
+}
+
+:hover > [class*="worktree--icon__estimate"] {
+  border-color: #222;
+  color: #222;
 }
 
 [class*="worktree--icon__remove-child"] {
-  background: pink;
-  border-color: pink;
+  margin: 0;
+  transition: 300ms;
+}
+
+[class*="worktree--icon__remove-child"]:hover {
+  background: #c11f1f;
+  border-color: #c11f1f;
+  color: white;
 }

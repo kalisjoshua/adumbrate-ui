@@ -1,9 +1,13 @@
-import { h } from 'preact';
+import { h } from "preact";
 
-import './App.css';
+import "./App.css";
 import Tree from "./Tree"
 
 function component() {
+  const tree = [
+    {title: "foo", children: [{title: "bar", children: [{title: "baz"}]}, {title: "buzz"}]},
+    {title: "blam"}
+  ]
 
   return (
     <section className="App">
@@ -15,7 +19,7 @@ function component() {
       <main>
         <div class="conatiner">
           {/*<p className="App-intro">Easily break down and estimate work.</p>*/}
-          <Tree />
+          <Tree tree={tree} />
         </div>
       </main>
     </section>

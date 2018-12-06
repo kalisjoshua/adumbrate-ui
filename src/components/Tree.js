@@ -11,11 +11,16 @@ const icon = (__html, title, fn) => (
   />
 )
 
+function rollup(node, est) {
+  console.log(est, node)
+  // throw new Error("Not Implemented Yet!")
+}
+
 class Workitem extends Component {
-  constructor({tree = []}) {
+  constructor({index, parent, tree = []}) {
     super()
 
-    this.setState({tree})
+    this.setState({index, parent, tree})
   }
   
   add(index, sibling) {
@@ -45,15 +50,31 @@ class Workitem extends Component {
 
       target.e = e
       
+      console.log(target)
+      // rollup(this.state.parent, e)
       this.setState({})
     }
   }
   
   remove(index) {
-    this.setState({tree: [
-      ...this.state.tree.slice(0, index),
-      ...this.state.tree.slice(index + 1)
-    ]})
+    let siblings = this.state.tree
+    
+    siblings = [
+      ...siblings.slice(0, index),
+      ...siblings.slice(index + 1)
+    ]
+
+    if (siblings.length) {
+      this.setState({tree: siblings})
+    } else if (!this.state.parent) {
+      this.setState({tree: []})
+    } else {
+      const parentSiblings = this.state.parent.state.tree
+
+      delete parentSiblings[this.state.index].children
+
+      this.state.parent.setState({tree: parentSiblings})
+    }
   }
   
   render() {
@@ -70,7 +91,7 @@ class Workitem extends Component {
               {!isEmpty && icon(`${node.e || "?"}`, "Estimate", () => this.estimate(i))}
               {!isEmpty && icon("&times;", "Remove Child", () => this.remove(i))}
             </div>
-            {node.children && <Workitem tree={node.children} />}
+            {node.children && <Workitem index={i} parent={this} tree={node.children} />}
           </li>
         ))}
       </ul>
