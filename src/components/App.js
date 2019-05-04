@@ -1,29 +1,40 @@
-import { h } from "preact";
+import {h, Component} from "preact";
 
 import "./App.css";
 import Tree from "./Tree"
 
-function component() {
-  const tree = [
-    {title: "foo", children: [{title: "bar", children: [{title: "baz"}]}, {title: "buzz"}]},
-    {title: "blam"}
-  ]
+import decorate from "../lib/decorate"
+import data from "../lib/data"
 
-  return (
-    <section className="App">
-      <header className="App-header">
-        <div class="conatiner">
-          <h1 className="App-title">Adumbrate</h1>
-        </div>
-      </header>
-      <main>
-        <div class="conatiner">
-          {/*<p className="App-intro">Easily break down and estimate work.</p>*/}
-          <Tree tree={tree} />
-        </div>
-      </main>
-    </section>
-  )
+class component extends Component {
+  constructor (props) {
+    super(props)
+    this.state.data = decorate(data)
+    this.state.data.listen(({context}) => {
+      this.setState({data: context})
+    })
+  }
+
+  render () {
+    console.clear()
+    console.log(this.state.data)
+
+    return (
+      <section className="App">
+        <header className="App-header">
+          <div class="conatiner">
+            <h1 className="App-title">Adumbrate</h1>
+          </div>
+        </header>
+        <main>
+          <div class="conatiner">
+            {/*<p className="App-intro">Easily break down and estimate work.</p>*/}
+            <Tree data={this.state.data} />
+          </div>
+        </main>
+      </section>
+    )
+  }
 }
 
 export default component;
