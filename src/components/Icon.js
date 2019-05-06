@@ -8,11 +8,19 @@ const Icon = ({label, onClick, title, type}) => (
 )
 
 Icon.Add = ({onClick}) => (
-  <Icon label="+" onClick={onClick} title="Add item" type="add" />
+  <Icon label="+" onClick={onClick} title="Add Item" type="add" />
+)
+
+Icon.Collapse = ({onClick}) => (
+  <Icon label="-" onClick={onClick} title="Collapse Children" type="collapse" />
+)
+
+Icon.Drag = ({onClick}) => (
+  <Icon label="::" onClick={onClick} title="Drag Item" type="drag" />
 )
 
 Icon.Remove = ({onClick}) => (
-  <Icon label="&times;" onClick={onClick} title="Remove item" type="remove" />
+  <Icon label="&times;" onClick={onClick} title="Remove Item" type="remove" />
 )
 
 export default Icon

@@ -27,7 +27,7 @@ function decorate (node, parent, notify = notifyFn.bind(null, node)) {
       value: Math.random().toString(36).slice(-6)
     },
     listen: {
-      // register a listener function for notification about events
+      // register a listener function; thesee will be fired after events
       value: (fn) => {
         node.root.listeners.push(fn)
       }

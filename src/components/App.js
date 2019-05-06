@@ -10,24 +10,22 @@ class component extends Component {
   constructor (props) {
     super(props)
     this.state.data = decorate(data)
-    this.state.data.listen(({context}) => {
+    this.state.data.listen(({context, event}) => {
       this.setState({data: context})
     })
   }
 
   render () {
-    console.clear()
-    console.log(this.state.data)
 
     return (
       <section className="App">
         <header className="App-header">
-          <div class="conatiner">
+          <div className="conatiner">
             <h1 className="App-title">Adumbrate</h1>
           </div>
         </header>
         <main>
-          <div class="conatiner">
+          <div className="conatiner">
             {/*<p className="App-intro">Easily break down and estimate work.</p>*/}
             <Tree data={this.state.data} />
           </div>
