@@ -1,12 +1,19 @@
 .App {
 }
 
-.App-header {
+.App > header {
   background-color: #222;
   color: white;
   height: 4ex;
   padding: 20px;
+  position: relative;
   text-align: center;
+  z-index: 9;
+}
+
+.App > main {
+  position: relative;
+  z-index: 1;
 }
 
 .App-title {

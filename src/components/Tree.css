@@ -1,7 +1,15 @@
 .tree {
   list-style-type: none;
-  margin: 0 0 0 2ex;
+  margin: 0;
   padding: 0;
+}
+
+.tree .tree {
+  margin: 0 0 0 4ex;
+}
+
+.isDragging {
+  opacity: 0.5;
 }
 
 .tree--title {
@@ -10,6 +18,8 @@
   transition-duration: 300ms;
   transition-property: box-shadow;
 }
+
+.isHovered {background: orange;}
 
 .tree--title:hover {
   border-color: gainsboro;
@@ -21,64 +31,4 @@
   margin-left: 1ex;
   position: relative;
   top: 3px;
-}
-
-[class*="tree--icon"] {
-  background: #EEE;
-  /* border-radius: 1ex; */
-  color: #999;
-  cursor: pointer;
-  line-height: 1.3;
-  padding: 0 1ex;
-  text-align: center;
-  transition: 300ms;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-[class*="tree--icon__add"]:hover {
-  background: lightgreen;
-  color: #444;
-}
-
-[class*="tree--icon__collapse"]:hover {
-  background: lightblue;
-  color: #444;
-}
-
-[class*="tree--icon__drag"] {
-  margin-right: 2ex;
-}
-
-[class*="tree--icon__drag"]:hover {
-  background: #DDD;
-  color: #444;
-}
-
-/*
-[class*="tree--icon__estimate"] {
-  background: white;
-  border-color: #999;
-  color: #999;
-  left: -2ex;
-  line-height: 1.4;
-  margin-right: 4ex;
-  transition: 300ms;
-  width: 6ex;
-}
-
-:hover > [class*="tree--icon__estimate"] {
-  border-color: #222;
-  color: #222;
-} */
-
-[class*="tree--icon__remove"] {
-  margin: 0;
-}
-
-[class*="tree--icon__remove"]:hover {
-  background: #c11f1f;
-  color: white;
 }

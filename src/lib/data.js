@@ -1,23 +1,26 @@
 const tree = {
   tree: [
     {
-      title: "foo",
+      title: "Step 1 - Steal the underpants",
       tree: [
         {
-          title: "bar",
+          title: "Feature 1 - A user story",
           tree: [
-            {
-              title: "baz"
-            }
+            {title: "Task 1"},
+            {title: "Task 2"},
+            {title: "Task 3"},
           ]
         },
         {
-          title: "buzz"
+          title: "Feature 2 - A technical implementation"
         }
       ]
     },
     {
-      title: "blam"
+      title: "Step 2 - ... ummm"
+    },
+    {
+      title: "Step 3 - PROFIT!"
     }
   ]
 }
