@@ -3,8 +3,7 @@ function decorate (node, parent, notify = notifyFn.bind(null, node)) {
     add: {
       // add a new item to the collection
       value: (obj) => {
-        node.tree.push({...obj, tree: []})
-        decorate(node.tree.slice(-1)[0], node, notify)
+        node.tree.push(decorate(extract(obj), node, notify))
         notify("add", obj)
       }
     },
@@ -49,6 +48,8 @@ function decorate (node, parent, notify = notifyFn.bind(null, node)) {
         parent.tree = parent.tree
           .filter(({id}) => node.id !== id)
         notify("remove")
+
+        return node
       }
     })
   } else {
@@ -63,6 +64,21 @@ function decorate (node, parent, notify = notifyFn.bind(null, node)) {
   }
 
   return node
+}
+
+function extract (obj) {
+  const props = Object.keys(obj).join()
+  /*eslint-disable no-new-func */
+  const exec = new Function("obj", `const {${props}} = obj; return {${props}}`)
+  /*eslint-enable no-new-func */
+
+  const result = exec(obj)
+
+  if (result.tree && result.tree.length) {
+    result.tree = result.tree.map(extract)
+  }
+
+  return result
 }
 
 function notifyFn (context, event, arg) {

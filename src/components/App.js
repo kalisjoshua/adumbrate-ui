@@ -17,6 +17,11 @@ class component extends Component {
       store: {},
     })
 
+    this.registry = {}
+
+    // throw new Error("edge case drag an item to the top-level")
+    // throw new Error("reordering items is awkward; drag each item to parent to send it to bottom")
+
     this.state.data = decorate(data)
     this.state.data.listen(({context, event}) => {
       this.setState({data: context})
@@ -24,15 +29,20 @@ class component extends Component {
   }
 
   dropHandler (source, target) {
-    while (!target.draggable && target.parentNode) {
-      target = target.parentNode
-    }
-
-    // check for dragging a parent onto a child to prevent infinite looping,
-    // worm holes, and tearing the space time continuum!
+    // Check for dragging a parent onto a child to prevent
+    // infinite looping, worm holes, and tearing the space time continuum!
     if (isDescendent(source, target)) {
       alert("Will not rip space time!")
+    } else {
+      const src = this.registry[source.dataset.id]
+      const tgt = this.registry[target.dataset.id]
+
+      tgt.add(src.remove())
     }
+  }
+
+  register (node) {
+    this.registry[node.id] = node
   }
 
   render () {
@@ -47,7 +57,7 @@ class component extends Component {
         <main>
           <div className="conatiner">
             {/*<p className="App-intro">Easily break down and estimate work.</p>*/}
-            <Tree data={this.state.data} drag={this.dragProps} />
+            <Tree data={this.state.data} drag={this.dragProps} register={this.register.bind(this)} />
           </div>
         </main>
       </section>

@@ -13,22 +13,25 @@ const add = (node) => {
 const confirm = () =>
   window.confirm("Are you sure you want to delete this part of the breakdown?")
 
-function Tree ({data, drag}) {
+function Tree ({data, drag, register}) {
 
   return data.tree && (
     <ol className="tree">
       {data.tree
-        .map((node) => (
-          <li {...drag} data-node={node.id}>
-            <div className="tree--title">
-              <Icon.Collapse onClick={() => {}} />
-              <Icon.Add onClick={add.bind(null, node)} />
-              <span className="tree--label">{node.title}</span>
-              <Icon.Remove onClick={() => {confirm() && node.remove()}} />
-            </div>
-            <Tree data={node} drag={drag} />
-          </li>
-        ))}
+        .map((node) => {
+          register(node)
+
+          return (
+            <li {...drag} data-id={node.id}>
+              <div className="tree--title">
+                <Icon.Add onClick={add.bind(null, node)} />
+                <span className="tree--label">{node.title}</span>
+                <Icon.Remove onClick={() => {confirm() && node.remove()}} />
+              </div>
+              <Tree data={node} drag={drag} register={register} />
+            </li>
+          )
+        })}
     </ol>
   )
 }
