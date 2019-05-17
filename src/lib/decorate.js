@@ -2,8 +2,10 @@ function decorate (node, parent, notify = notifyFn.bind(null, node)) {
   Object.defineProperties(node, {
     add: {
       // add a new item to the collection
-      value: (obj) => {
-        node.tree.push(decorate(extract(obj), node, notify))
+      value: (obj, sibling) => {
+        const p = (sibling ? parent : node)
+
+        p.tree.push(decorate(extract(obj), p, notify))
         notify("add", obj)
       }
     },
@@ -47,6 +49,7 @@ function decorate (node, parent, notify = notifyFn.bind(null, node)) {
       value: () => {
         parent.tree = parent.tree
           .filter(({id}) => node.id !== id)
+
         notify("remove")
 
         return node

@@ -20,7 +20,7 @@ function draggableElement (element, options) {
   function drop (e) {
     const target = findDraggable(e.target)
 
-    callback(store.activeElement, findDraggable(target))
+    callback(store.activeElement, target, dropPosition(e, target))
     e.stopPropagation()
     element.ondragexit(e)
 
@@ -36,9 +36,14 @@ function draggableElement (element, options) {
   }
 
   function hover (e) {
-    e.preventDefault()
+    const target = findDraggable(e.target)
+
+    // TODO: make these CSS classes config values
+    target.classList.remove("drop-sibling", "drop-child")
+    target.classList.add(`drop-${dropPosition(e, target)}`)
 
     e.dataTransfer.dropEffect = dataTransferEffect
+    e.preventDefault()
 
     return false
   }
@@ -67,6 +72,9 @@ function draggableElement (element, options) {
       if (allow) {
         target.classList[action](classHovered)
       }
+
+      // TODO: make these CSS classes config values
+      target.classList.remove("drop-sibling", "drop-child")
     }
   }
 
@@ -95,6 +103,22 @@ function draggable (options) {
   Array
     .from(document.querySelectorAll(options.selector))
     .forEach((li) => draggableElement(li, {...options, store}))
+}
+
+function dropPosition (e, target) {
+  let temp = target
+  let offset = 0
+
+  while (temp.parentNode) {
+    offset = temp.offsetTop ? temp.offsetTop : offset
+    temp = temp.parentNode
+  }
+
+  const midpoint = offset + target.offsetTop + ~~(target.offsetHeight / 2)
+
+  return e.y < midpoint
+    ? "sibling"
+    : "child"
 }
 
 function findDraggable (node) {

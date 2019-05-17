@@ -19,16 +19,13 @@ class component extends Component {
 
     this.registry = {}
 
-    // throw new Error("edge case drag an item to the top-level")
-    // throw new Error("reordering items is awkward; drag each item to parent to send it to bottom")
-
     this.state.data = decorate(data)
     this.state.data.listen(({context, event}) => {
       this.setState({data: context})
     })
   }
 
-  dropHandler (source, target) {
+  dropHandler (source, target, pos) {
     // Check for dragging a parent onto a child to prevent
     // infinite looping, worm holes, and tearing the space time continuum!
     if (isDescendent(source, target)) {
@@ -37,7 +34,7 @@ class component extends Component {
       const src = this.registry[source.dataset.id]
       const tgt = this.registry[target.dataset.id]
 
-      tgt.add(src.remove())
+      tgt.add(src.remove(), pos === "sibling")
     }
   }
 
@@ -57,7 +54,11 @@ class component extends Component {
         <main>
           <div className="conatiner">
             {/*<p className="App-intro">Easily break down and estimate work.</p>*/}
-            <Tree data={this.state.data} drag={this.dragProps} register={this.register.bind(this)} />
+            <Tree
+              data={this.state.data}
+              drag={this.dragProps}
+              register={this.register.bind(this)}
+              />
           </div>
         </main>
       </section>

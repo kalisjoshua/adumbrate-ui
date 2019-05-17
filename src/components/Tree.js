@@ -22,8 +22,8 @@ function Tree ({data, drag, register}) {
           register(node)
 
           return (
-            <li {...drag} data-id={node.id}>
-              <div className="tree--title">
+            <li>
+              <div className="tree--title" {...drag} data-id={node.id}>
                 <Icon.Add onClick={add.bind(null, node)} />
                 <span className="tree--label">{node.title}</span>
                 <Icon.Remove onClick={() => {confirm() && node.remove()}} />
