@@ -26,3 +26,9 @@ const tree = {
 }
 
 export default tree
+// export default {tree: []}
+// export default {tree: [
+//   {title: "one"},
+//   {title: "two"},
+//   {title: "three"},
+// ]}

@@ -2,11 +2,23 @@ import {h, Component} from "preact";
 
 import "./App.css";
 import Tree from "./Tree"
+import Info from "./Info"
 
 import decorate from "../lib/decorate"
 import data from "../lib/data"
 import {draggableElement} from "../lib/draggable"
 import {isDescendent} from "../lib/util"
+
+// TODO:
+//    - edit screen
+//        + title and description
+//        + labels/tags
+//        + additional properties
+//    - display/enter estimates
+
+function keyUp (context, inputEl, {which}) {
+  which === 13 && context.add(inputEl)
+}
 
 class component extends Component {
   constructor (props) {
@@ -17,6 +29,8 @@ class component extends Component {
       store: {},
     })
 
+    this.inputEl = null
+
     this.registry = {}
 
     this.state.data = decorate(data)
@@ -25,10 +39,18 @@ class component extends Component {
     })
   }
 
+  add (input) {
+    if (input.value) {
+      this.state.data.add({title: input.value})
+    }
+
+    input.value = ""
+  }
+
   dropHandler (source, target, pos) {
     // Check for dragging a parent onto a child to prevent
     // infinite looping, worm holes, and tearing the space time continuum!
-    if (isDescendent(source, target)) {
+    if (isDescendent(source.parentNode, target.parentNode)) {
       alert("Will not rip space time!")
     } else {
       const src = this.registry[source.dataset.id]
@@ -38,11 +60,8 @@ class component extends Component {
     }
   }
 
-  register (node) {
-    this.registry[node.id] = node
-  }
-
   render () {
+    let inputEl
 
     return (
       <section className="App">
@@ -53,12 +72,17 @@ class component extends Component {
         </header>
         <main>
           <div className="conatiner">
-            {/*<p className="App-intro">Easily break down and estimate work.</p>*/}
-            <Tree
-              data={this.state.data}
-              drag={this.dragProps}
-              register={this.register.bind(this)}
-              />
+            <div className="addEpic">
+              <input onKeyup={(e) => keyUp(this, inputEl, e)} ref={(ref) => inputEl = ref} />
+              <button onClick={() => this.add(inputEl)}>Add Item</button>
+            </div>
+            {!data.tree.length
+              ? (<Info />)
+              : (<Tree
+                  data={data}
+                  drag={this.dragProps}
+                  register={(node) => this.registry[node.id] = node}
+                  />)}
           </div>
         </main>
       </section>

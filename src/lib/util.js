@@ -1,11 +1,11 @@
 function isDescendent (a, b) {
+  let related
   let walker = b
-  let related = walker === a
 
-  while (!related && walker.parentNode) {
+  do {
     walker = walker.parentNode
     related = walker === a
-  }
+  } while (!related && walker.parentNode)
 
   return related
 }

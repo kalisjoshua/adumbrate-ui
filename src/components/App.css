@@ -5,6 +5,7 @@
   background-color: #222;
   color: white;
   height: 4ex;
+  margin-bottom: 1ex;
   padding: 20px;
   position: relative;
   text-align: center;
@@ -27,4 +28,26 @@
 .conatiner {
   margin: 0 auto;
   max-width: 120ex;
+}
+
+.addEpic {
+  display: flex;
+}
+
+.addEpic * {
+  border: 0;
+  border-bottom: 1px solid #444;
+  font-size: 1em;
+}
+
+.addEpic button {
+  background: darkGreen;
+  color: white;
+  padding: .5ex 2ex;
+}
+
+.addEpic input {
+  display: inline-block;
+  flex-grow: 1;
+  padding: 0 1ex;
 }
