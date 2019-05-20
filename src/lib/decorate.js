@@ -19,7 +19,7 @@ function decorate (node, parent, notify = notifyFn.bind(null, node)) {
     estimate: {
       // set an estimation for a given item
       value: (num) => {
-        node.estimation = num
+        node.estimation = +num
         notify("estimate", num)
       }
     },

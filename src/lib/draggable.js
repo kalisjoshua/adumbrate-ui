@@ -20,7 +20,7 @@ function draggableElement (element, options) {
   function drop (e) {
     const target = findDraggable(e.target)
 
-    callback(store.activeElement, target, dropPosition(e, target))
+    callback(store.activeElement, target)
     e.stopPropagation()
     element.ondragexit(e)
 

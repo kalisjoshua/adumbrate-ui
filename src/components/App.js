@@ -14,7 +14,8 @@ import {isDescendent} from "../lib/util"
 //        + title and description
 //        + labels/tags
 //        + additional properties
-//    - display/enter estimates
+//    - prevent adding an estimate to a parent node with aggregate
+//    - display estimate separate from aggregate
 
 function keyUp (context, inputEl, {which}) {
   which === 13 && context.add(inputEl)
@@ -47,14 +48,19 @@ class component extends Component {
     input.value = ""
   }
 
-  dropHandler (source, target, pos) {
+  dropHandler (source, target) {
     // Check for dragging a parent onto a child to prevent
     // infinite looping, worm holes, and tearing the space time continuum!
-    if (isDescendent(source.parentNode, target.parentNode)) {
+    if (isDescendent(source.parentNode, target.parentNode) || source.parentNode === target.parentNode) {
       alert("Will not rip space time!")
+      target.classList.remove("isHovered")
     } else {
       const src = this.registry[source.dataset.id]
       const tgt = this.registry[target.dataset.id]
+      const [pos] = target
+        .getAttribute("class")
+        .match(/drop-([^\s]+)/)
+        .slice(1)
 
       tgt.add(src.remove(), pos === "sibling")
     }

@@ -12,11 +12,15 @@ Icon.Add = ({onClick}) => (
 )
 
 Icon.Collapse = ({onClick}) => (
-  <Icon label="-" onClick={onClick} title="Collapse Children" type="collapse" />
+  <Icon label="..." onClick={onClick} title="Collapse Children" type="collapse" />
 )
 
 Icon.Drag = ({onClick}) => (
   <Icon label="::" onClick={onClick} title="Drag Item" type="drag" />
+)
+
+Icon.Estimate = ({onClick, value}) => (
+  <Icon label={value} onClick={onClick} title="Estimate Item" type="estimate" />
 )
 
 Icon.Remove = ({onClick}) => (

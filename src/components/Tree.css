@@ -8,8 +8,8 @@
   display: none;
 }
 
-.collapse-closed .tree--label:after {
-  content: " ...";
+.collapse-closed .tree--icon__collapse {
+  background: blue;
 }
 
 .tree .tree {
@@ -21,7 +21,6 @@
 }
 
 .tree--title {
-  /* border: 2px solid transparent; */
   border-radius: 4px;
   border-left: 0;
   border-right: 0;
@@ -31,8 +30,8 @@
   transition-property: box-shadow;
 }
 
-.tree--title.drop-child {border-bottom: 1ex solid blue;}
-.tree--title.drop-sibling {border-top: 1ex solid orange;}
+.tree--title.drop-child:not(.isDragging) {border-bottom: 1ex solid blue;}
+.tree--title.drop-sibling:not(.isDragging) {border-top: 1ex solid orange;}
 
 .isHovered {
   background: gainsboro;
