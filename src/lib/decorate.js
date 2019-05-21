@@ -11,27 +11,27 @@ function decorate (node, parent, notify = notifyFn.bind(null, node)) {
     },
     aggregate: {
       // calculate/sum up the tree the estimations
-      enumerable: true,
       get: () =>
         (node.estimation || 0) +
           node.tree.reduce((a, n) => a + (n.aggregate || 0), 0)
     },
     estimate: {
-      // set an estimation for a given item
-      value: (num) => {
+      enumerable: true,
+      get: () => node.estimation,
+      // set an estimation for a given item and notify when it heppens
+      set: (num) => {
         node.estimation = +num
         notify("estimate", num)
       }
-    },
-    id: {
-      // set a random identifier used to filter the item out of the collection
-      value: Math.random().toString(36).slice(-6)
     },
     listen: {
       // register a listener function; thesee will be fired after events
       value: (fn) => {
         node.root.listeners.push(fn)
       }
+    },
+    parent: {
+      value: parent,
     },
     root: {
       // recurse up the tree to the root node
@@ -41,6 +41,7 @@ function decorate (node, parent, notify = notifyFn.bind(null, node)) {
     },
   })
 
+  node.id = Math.random().toString(36).slice(-6)
   node.tree = node.tree || []
 
   if (parent) {

@@ -1,5 +1,7 @@
 import {h} from "preact"
 
+import "./Icons.css"
+
 const Icon = ({label, onClick, title, type}) => (
   <span
     className={`tree--icon__${type}`}

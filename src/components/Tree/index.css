@@ -49,3 +49,34 @@
   position: relative;
   top: 3px;
 }
+
+[class*="tree--estimate"] {
+  border: 1px solid #ddd;
+  border-radius: 1ex;
+  color: #ddd;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 1ex;
+  padding: 2px 1ex 0;
+  text-align: center;
+  width: 4ex;
+}
+[class*="tree--estimate"]:hover {
+  border-color: #444;
+  color: #444;
+}
+
+.tree--estimate__aggregate {
+  border-color: #ddd;
+  color: #ddd;
+}
+
+.tree--title:hover .tree--estimate__aggregate {
+  border-color: #aaa;
+  color: #aaa;
+}
+
+.tree--estimate__estimate {
+  border-color: #aaa;
+  color: #aaa;
+}

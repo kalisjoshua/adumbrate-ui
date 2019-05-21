@@ -1,26 +1,28 @@
 import {h, Component} from "preact";
 
 import "./App.css";
-import Tree from "./Tree"
 import Info from "./Info"
+import Tree from "./Tree"
 
-import decorate from "../lib/decorate"
+import decorate, {extract} from "../lib/decorate"
 import dataLib, {testData} from "../lib/data"
 import {draggableElement} from "../lib/draggable"
 import {isDescendent} from "../lib/util"
 
 // TODO:
-//    - fix bug with moving collapsed elements
 //    - edit screen
 //        + title and description
 //        + labels/tags
 //        + additional properties
-//    - prevent adding an estimate to a parent node with aggregate
-//    - display estimate separate from aggregate
 //    - add/edit (admin) general schema for items
 
 function keyUp (context, inputEl, {which}) {
   which === 13 && context.add(inputEl)
+}
+
+function listener ({context, event}) {
+  dataLib.update(context)
+  this.setState({data: context})
 }
 
 class component extends Component {
@@ -32,15 +34,10 @@ class component extends Component {
       store: {},
     })
 
-    this.inputEl = null
-
     this.registry = {}
 
     this.state.data = decorate(dataLib.read())
-    this.state.data.listen(({context, event}) => {
-      dataLib.update(context)
-      this.setState({data: context})
-    })
+    this.state.data.listen(listener.bind(this))
 
     this.testData = () => {
       this.initializeData(dataLib.update(testData))
@@ -78,10 +75,7 @@ class component extends Component {
 
   initializeData (data) {
     this.setState({data: decorate(data)}, () => {
-      this.state.data.listen(({context, event}) => {
-        dataLib.update(context)
-        this.setState({data: context})
-      })
+      this.state.data.listen(listener.bind(this))
     })
   }
 
@@ -95,6 +89,7 @@ class component extends Component {
             <h1 className="App-title">Adumbrate</h1>
           </div>
         </header>
+
         <main>
           <div className="container">
             <div className="addEpic">
