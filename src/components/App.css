@@ -1,4 +1,24 @@
-.App {
+.App > footer {
+  margin-top: 3ex;
+}
+
+.App > footer .container {
+  border-top: 1px solid #ccc;
+  padding: 2ex;
+}
+
+.App > footer .container > * {
+  font-size: 90%;
+}
+
+.App > footer ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.App > footer ul li {
+  margin-top: 1ex;
 }
 
 .App > header {
@@ -25,13 +45,14 @@
   font-size: large;
 }
 
-.conatiner {
+.container {
   margin: 0 auto;
   max-width: 120ex;
 }
 
 .addEpic {
   display: flex;
+  margin-bottom: 3ex;
 }
 
 .addEpic * {
@@ -50,4 +71,21 @@
   display: inline-block;
   flex-grow: 1;
   padding: 0 1ex;
+}
+
+.dataLinks {
+  float: right;
+}
+
+a,
+.link-like {
+  color: #444;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+a:hover,
+.link-like:hover {
+  color: black;
+  text-decoration: none;
 }

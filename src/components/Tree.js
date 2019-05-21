@@ -46,11 +46,11 @@ function Title ({drag, node}) {
 
 function Tree ({data, drag, register}) {
 
-  return data.tree.length
+  return (data.tree && data.tree.length)
     ? (
-      <ul className="tree">
+      <ol className="tree">
         {data.tree.map((node) => (<Leaf {...{drag, node, register}} />))}
-      </ul>
+      </ol>
     )
     : null
 }

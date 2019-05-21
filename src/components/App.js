@@ -5,17 +5,19 @@ import Tree from "./Tree"
 import Info from "./Info"
 
 import decorate from "../lib/decorate"
-import data from "../lib/data"
+import dataLib, {testData} from "../lib/data"
 import {draggableElement} from "../lib/draggable"
 import {isDescendent} from "../lib/util"
 
 // TODO:
+//    - fix bug with moving collapsed elements
 //    - edit screen
 //        + title and description
 //        + labels/tags
 //        + additional properties
 //    - prevent adding an estimate to a parent node with aggregate
 //    - display estimate separate from aggregate
+//    - add/edit (admin) general schema for items
 
 function keyUp (context, inputEl, {which}) {
   which === 13 && context.add(inputEl)
@@ -34,10 +36,18 @@ class component extends Component {
 
     this.registry = {}
 
-    this.state.data = decorate(data)
+    this.state.data = decorate(dataLib.read())
     this.state.data.listen(({context, event}) => {
+      dataLib.update(context)
       this.setState({data: context})
     })
+
+    this.testData = () => {
+      this.initializeData(dataLib.update(testData))
+    }
+    this.emptyData = () => {
+      this.initializeData(dataLib.update())
+    }
   }
 
   add (input) {
@@ -66,31 +76,48 @@ class component extends Component {
     }
   }
 
+  initializeData (data) {
+    this.setState({data: decorate(data)}, () => {
+      this.state.data.listen(({context, event}) => {
+        dataLib.update(context)
+        this.setState({data: context})
+      })
+    })
+  }
+
   render () {
     let inputEl
 
     return (
       <section className="App">
         <header className="App-header">
-          <div className="conatiner">
+          <div className="container">
             <h1 className="App-title">Adumbrate</h1>
           </div>
         </header>
         <main>
-          <div className="conatiner">
+          <div className="container">
             <div className="addEpic">
               <input onKeyup={(e) => keyUp(this, inputEl, e)} ref={(ref) => inputEl = ref} />
               <button onClick={() => this.add(inputEl)}>Add Item</button>
             </div>
-            {!data.tree.length
+            {!this.state.data.tree.length
               ? (<Info />)
               : (<Tree
-                  data={data}
+                  data={this.state.data}
                   drag={this.dragProps}
-                  register={(node) => this.registry[node.id] = node}
-                  />)}
+                  register={(node) => this.registry[node.id] = node} />)}
           </div>
         </main>
+
+        <footer>
+          <div className="container">
+            <ul className="dataLinks">
+              <li><span className="link-like" onClick={this.testData}>Load testing data</span></li>
+              <li><span className="link-like" onClick={this.emptyData}>Empty localStorage</span></li>
+            </ul>
+          </div>
+        </footer>
       </section>
     )
   }

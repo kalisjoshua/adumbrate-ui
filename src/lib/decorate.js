@@ -90,3 +90,4 @@ function notifyFn (context, event, arg) {
 }
 
 export default decorate
+export {extract}

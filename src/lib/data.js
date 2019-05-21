@@ -1,4 +1,10 @@
-const tree = {
+// setInterval(() => {
+//   localStorage.setItem(key, JSON.stringify(tree))
+// }, 10000)
+
+const defaultData = {tree: []}
+const key = "adumbrate"
+const testData = {
   tree: [
     {
       title: "Step 1 - Steal the underpants",
@@ -25,10 +31,19 @@ const tree = {
   ]
 }
 
-export default tree
-// export default {tree: []}
-// export default {tree: [
-//   {title: "one"},
-//   {title: "two"},
-//   {title: "three"},
-// ]}
+function read () {
+  let store = localStorage.getItem(key)
+
+  return store
+    ? JSON.parse(store)
+    : update()
+}
+
+function update (data) {
+  localStorage.setItem(key, JSON.stringify(data || defaultData))
+
+  return read()
+}
+
+export default {read, update}
+export {testData}
