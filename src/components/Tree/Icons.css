@@ -1,8 +1,6 @@
 [class*="tree--icon"] {
-  /* background: #eee; */
   color: #999;
   cursor: pointer;
-  line-height: 1.3;
   position: relative;
   padding: 0 1ex;
   top: 0;
@@ -22,10 +20,6 @@
 [class*="tree--icon__estimate"]:hover {
   background: lightgreen;
   color: #444;
-}
-
-[class*="tree--icon__estimate"] {
-  background: none;
 }
 
 [class*="tree--icon__remove"]:hover {

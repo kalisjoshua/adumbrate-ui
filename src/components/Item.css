@@ -1,0 +1,41 @@
+.app--info {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 0 4px 4px 0;
+  padding: 0 1ex 2ex;
+}
+
+.app--info h2 {
+  border-bottom: 1px solid;
+  color: #444;
+  font-size: 120%;
+  margin-top: 0.7ex;
+}
+
+.formField + .formField {
+  margin-top: 2ex;
+}
+
+.formField input,
+.formField textarea {
+  border: 1px solid #aaa;
+  font-size: 1em;
+  margin: 0;
+  padding: 4px;
+  width: 100%;
+}
+
+.formField label {
+  display: block;
+}
+
+.formField textarea {
+  height: 12ex;
+}
+
+.formField.buttons button {
+  float: right;
+}
+
+input[disabled] {
+  color: black;
+}

@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .App > footer {
   margin-top: 3ex;
 }
@@ -25,12 +29,20 @@
   background-color: #222;
   color: white;
   height: 4ex;
+  margin: 0;
   margin-bottom: 1ex;
-  padding: 20px;
+  padding: 3ex;
   position: relative;
   text-align: center;
   z-index: 9;
 }
+
+.App > header:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 
 .App > main {
   position: relative;
@@ -39,6 +51,7 @@
 
 .App-title {
   font-size: 1.5em;
+  margin: 0;
 }
 
 .App-intro {
@@ -61,9 +74,11 @@
   font-size: 1em;
 }
 
-.addEpic button {
+button {
   background: darkGreen;
+  border: 0;
   color: white;
+  font-size: 1em;
   padding: .5ex 2ex;
 }
 
@@ -88,4 +103,19 @@ a:hover,
 .link-like:hover {
   color: black;
   text-decoration: none;
+}
+
+.app-columns__one {
+  display: grid;
+  grid-template-columns: auto;
+}
+
+.app-columns__two {
+  display: grid;
+  /* grid-column-gap: 1ex; */
+  grid-template-columns: auto 36%;
+}
+
+.app-columns__one .app--info {
+  display: none;
 }

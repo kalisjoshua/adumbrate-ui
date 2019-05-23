@@ -3,7 +3,9 @@ import {h} from "preact"
 const cssRoot = "tree--estimate"
 
 function Estimate ({node}) {
-  const onClick = () => {
+  const onClick = (e) => {
+    e.stopPropagation()
+
     if (node.parent.id !== node.root.id) {
       node.estimate = prompt("?")
     } else {
@@ -28,7 +30,7 @@ function Estimate ({node}) {
   }
 
   const title = node.aggregate || node.estimate
-    ? ""
+    ? "Edit the Estimate for this item"
     : "Add an Estimate for this item."
 
   return (

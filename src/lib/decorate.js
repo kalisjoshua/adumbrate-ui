@@ -41,7 +41,7 @@ function decorate (node, parent, notify = notifyFn.bind(null, node)) {
     },
   })
 
-  node.id = Math.random().toString(36).slice(-6)
+  node.id = node.id || Math.random().toString(36).slice(-6)
   node.tree = node.tree || []
 
   if (parent) {

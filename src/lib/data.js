@@ -1,10 +1,10 @@
-// setInterval(() => {
-//   localStorage.setItem(key, JSON.stringify(tree))
-// }, 10000)
+import decorate from "./decorate"
 
 const defaultData = {tree: []}
 const key = "adumbrate"
-const testData = {
+const metaKey = `${key}-meta`
+const store = JSON.parse(localStorage.getItem(metaKey)) || {}
+const testData = decorate({
   tree: [
     {
       title: "Step 1 - Steal the underpants",
@@ -29,6 +29,16 @@ const testData = {
       title: "Step 3 - PROFIT!"
     }
   ]
+})
+
+function meta (id, obj) {
+  if (obj) {
+    store[id] = obj
+    localStorage.setItem(metaKey, JSON.stringify(store))
+  } else {
+
+    return store[id]
+  }
 }
 
 function read () {
@@ -45,5 +55,5 @@ function update (data) {
   return read()
 }
 
-export default {read, update}
+export default {meta, read, update}
 export {testData}

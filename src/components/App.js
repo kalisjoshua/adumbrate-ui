@@ -2,18 +2,15 @@ import {h, Component} from "preact";
 
 import "./App.css";
 import Info from "./Info"
+import Item from "./Item"
 import Tree from "./Tree"
 
-import decorate, {extract} from "../lib/decorate"
+import decorate from "../lib/decorate"
 import dataLib, {testData} from "../lib/data"
 import {draggableElement} from "../lib/draggable"
 import {isDescendent} from "../lib/util"
 
 // TODO:
-//    - edit screen
-//        + title and description
-//        + labels/tags
-//        + additional properties
 //    - add/edit (admin) general schema for items
 
 function keyUp (context, inputEl, {which}) {
@@ -79,8 +76,39 @@ class component extends Component {
     })
   }
 
+  itemSelect (node) {
+    const selector = "selected"
+
+    const selected = document.querySelector(`.${selector}`)
+    const next = document.querySelector(`[data-id="${node.id}"]`)
+
+    if (selected === next) {
+      selected.classList.toggle(selector)
+    } else {
+      selected && selected.classList.remove(selector)
+      next.classList.add(selector)
+    }
+
+    this.setState({selected: this.state.selected === node.id ? null : node.id})
+  }
+
+  itemUpdate ({dataset: {id}, name, value}) {
+    console.log(id)
+    const itemMeta = dataLib.meta(id) || {}
+
+    itemMeta[name] = value
+
+    dataLib.meta(id, itemMeta)
+  }
+
   render () {
     let inputEl
+    const item = this.registry[this.state.selected]
+    const meta = dataLib.meta(this.state.selected) || {}
+
+    const columns = this.state.selected
+      ? "app-columns__two"
+      : "app-columns__one"
 
     return (
       <section className="App">
@@ -90,18 +118,26 @@ class component extends Component {
           </div>
         </header>
 
-        <main>
-          <div className="container">
-            <div className="addEpic">
-              <input onKeyup={(e) => keyUp(this, inputEl, e)} ref={(ref) => inputEl = ref} />
-              <button onClick={() => this.add(inputEl)}>Add Item</button>
+        <main className="container">
+          <div className={columns}>
+            <div className="app--main">
+              <div className="addEpic">
+                <input onKeyup={(e) => keyUp(this, inputEl, e)} ref={(ref) => inputEl = ref} />
+                <button onClick={() => this.add(inputEl)}>Add Item</button>
+              </div>
+
+              {!this.state.data.tree.length
+                ? (<Info />)
+                : (<Tree
+                    data={this.state.data}
+                    drag={this.dragProps}
+                    register={(node) => this.registry[node.id] = node}
+                    select={(e) => this.itemSelect(e)} />)}
             </div>
-            {!this.state.data.tree.length
-              ? (<Info />)
-              : (<Tree
-                  data={this.state.data}
-                  drag={this.dragProps}
-                  register={(node) => this.registry[node.id] = node} />)}
+
+            <div className="app--info">
+              <Item item={item} meta={meta} update={(node) => this.itemUpdate(node)} />
+            </div>
           </div>
         </main>
 

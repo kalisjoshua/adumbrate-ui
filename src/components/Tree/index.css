@@ -1,5 +1,4 @@
 .tree {
-  list-style-type: none;
   margin: 0;
   padding: 0;
 }
@@ -13,7 +12,8 @@
 }
 
 .tree .tree {
-  margin: 0 0 0 4ex;
+  list-style-type: none;
+  margin: 0 0 0 3ex;
 }
 
 .isDragging {
@@ -21,17 +21,25 @@
 }
 
 .tree--title {
-  border-radius: 4px;
+  border-radius: 4px 0 0 4px;
   border-left: 0;
   border-right: 0;
   display: flex;
-  padding: 4px 2ex;
-  transition-duration: 300ms;
-  transition-property: box-shadow;
+  padding: 4px 1ex;
+  transition: box-shadow 300ms;
 }
 
 .tree--title.drop-child:not(.isDragging) {border-bottom: 1ex solid blue;}
 .tree--title.drop-sibling:not(.isDragging) {border-top: 1ex solid orange;}
+
+.tree--title small {
+  color: gainsboro;
+  transition: color 1000ms;
+}
+
+.tree--title:hover small {
+  color: #444;
+}
 
 .isHovered {
   background: gainsboro;
@@ -47,20 +55,22 @@
   flex-grow: 1;
   margin-left: 1ex;
   position: relative;
-  top: 3px;
 }
 
 [class*="tree--estimate"] {
-  border: 1px solid #ddd;
-  border-radius: 1ex;
   color: #ddd;
   cursor: pointer;
   display: inline-block;
   margin-right: 1ex;
-  padding: 2px 1ex 0;
   text-align: center;
-  width: 4ex;
+  width: 8ex;
 }
+
+.tree--estimate {
+  border: 1px solid #ddd;
+  border-radius: 1ex;
+}
+
 [class*="tree--estimate"]:hover {
   border-color: #444;
   color: #444;
@@ -79,4 +89,8 @@
 .tree--estimate__estimate {
   border-color: #aaa;
   color: #aaa;
+}
+
+.selected {
+  background: rgba(0, 0, 0, 0.1);
 }
