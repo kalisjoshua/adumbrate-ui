@@ -11,6 +11,7 @@ import {draggableElement} from "../lib/draggable"
 import {isDescendent} from "../lib/util"
 
 // TODO:
+//    - integrate firebase for persistence
 //    - add/edit (admin) general schema for items
 
 function keyUp (context, inputEl, {which}) {
