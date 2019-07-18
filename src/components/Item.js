@@ -4,7 +4,7 @@ import "./Item.css"
 
 import debounce from "../lib/debounce"
 
-function Item ({item, meta, update}) {
+function Item ({item, update}) {
   if (!item) return
 
   const isRoot = item.parent.id === item.root.id
@@ -32,7 +32,7 @@ function Item ({item, meta, update}) {
 
       <div className="formField">
         <label for="description">Description</label>
-        <textarea id="description" data-id={item.id} key={`${item.id}-description`} name="description" onKeyup={changeFn}>{meta.description || ""}</textarea>
+        <textarea id="description" data-id={item.id} key={`${item.id}-description`} name="description" onKeyup={changeFn}>{item.description || ""}</textarea>
       </div>
 
       {/*

@@ -2,8 +2,6 @@ import decorate from "./decorate"
 
 const defaultData = {tree: []}
 const key = "adumbrate"
-const metaKey = `${key}-meta`
-const store = JSON.parse(localStorage.getItem(metaKey)) || {}
 const testData = decorate({
   tree: [
     {
@@ -31,18 +29,10 @@ const testData = decorate({
   ]
 })
 
-function meta (id, obj) {
-  if (obj) {
-    store[id] = obj
-    localStorage.setItem(metaKey, JSON.stringify(store))
-  } else {
-
-    return store[id]
-  }
-}
+let store
 
 function read () {
-  let store = localStorage.getItem(key)
+  store = localStorage.getItem(key)
 
   return store
     ? JSON.parse(store)
@@ -55,5 +45,7 @@ function update (data) {
   return read()
 }
 
-export default {meta, read, update}
+read()
+
+export default ({read, update})
 export {testData}

@@ -72,9 +72,8 @@ function decorate (node, parent, notify = notifyFn.bind(null, node)) {
 
 function extract (obj) {
   const props = Object.keys(obj).join()
-  /*eslint-disable no-new-func */
+  // eslint-disable-next-line no-new-func
   const exec = new Function("obj", `const {${props}} = obj; return {${props}}`)
-  /*eslint-enable no-new-func */
 
   const result = exec(obj)
 
@@ -86,6 +85,7 @@ function extract (obj) {
 }
 
 function notifyFn (context, event, arg) {
+  console.log("notify fired")
   context.root.listeners
     .forEach((fn) => fn({arg, context, event}))
 }

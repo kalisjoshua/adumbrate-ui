@@ -19,6 +19,7 @@ function keyUp (context, inputEl, {which}) {
 }
 
 function listener ({context, event}) {
+  console.log("listener")
   dataLib.update(context)
   this.setState({data: context})
 }
@@ -80,32 +81,32 @@ class component extends Component {
   itemSelect (node) {
     const selector = "selected"
 
-    const selected = document.querySelector(`.${selector}`)
-    const next = document.querySelector(`[data-id="${node.id}"]`)
+    const currentElement = document.querySelector(`.${selector}`)
+    const nextElement = document.querySelector(`[data-id="${node.id}"]`)
 
-    if (selected === next) {
-      selected.classList.toggle(selector)
+    if (currentElement === nextElement) {
+      currentElement.classList.toggle(selector)
     } else {
-      selected && selected.classList.remove(selector)
-      next.classList.add(selector)
+      currentElement && currentElement.classList.remove(selector)
+      nextElement.classList.add(selector)
     }
 
-    this.setState({selected: this.state.selected === node.id ? null : node.id})
+    this.setState({
+      selected: (this.state.selected || {}).id === node.id
+        ? null
+        : node
+    })
   }
 
   itemUpdate ({dataset: {id}, name, value}) {
-    console.log(id)
-    const itemMeta = dataLib.meta(id) || {}
+    this.registry[id][name] = value
 
-    itemMeta[name] = value
-
-    dataLib.meta(id, itemMeta)
+    this.setState(this.state.data)
   }
 
   render () {
     let inputEl
-    const item = this.registry[this.state.selected]
-    const meta = dataLib.meta(this.state.selected) || {}
+    const item = this.registry[(this.state.selected || {}).id]
 
     const columns = this.state.selected
       ? "app-columns__two"
@@ -137,7 +138,7 @@ class component extends Component {
             </div>
 
             <div className="app--info">
-              <Item item={item} meta={meta} update={(node) => this.itemUpdate(node)} />
+              <Item item={item} update={this.itemUpdate.bind(this)} />
             </div>
           </div>
         </main>
