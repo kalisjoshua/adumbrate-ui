@@ -1,0 +1,51 @@
+.app-columns__one {
+  display: grid;
+  grid-template-columns: auto;
+}
+
+.app-columns__two {
+  display: grid;
+  grid-template-columns: auto 36%;
+}
+
+.app-columns__one .app--info {
+  display: none;
+}
+
+.addItem {
+  display: inline-block;
+  font-size: 100%;
+  margin-top: 2ex;
+  margin-left: 2ex;
+  width: calc(100% - 4ex);
+}
+
+.dataLinks {
+  text-align: right;
+}
+
+
+/* Data links footer */
+
+.planning-footer {
+  margin-top: 3ex;
+}
+
+.planning-footer .container {
+  border-top: 1px solid #ccc;
+  padding: 2ex;
+}
+
+.planning-footer .container > * {
+  font-size: 90%;
+}
+
+.planning-footer ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.planning-footer ul li {
+  margin-top: 1ex;
+}

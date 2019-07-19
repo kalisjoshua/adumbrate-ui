@@ -1,10 +1,10 @@
 import {h, fragment} from "preact";
 
-import "./Item.css"
+import "./Details.css"
 
 import debounce from "../lib/debounce"
 
-function Item ({item, update}) {
+function Details ({item, update}) {
   if (!item) return
 
   const isRoot = item.parent.id === item.root.id
@@ -34,14 +34,8 @@ function Item ({item, update}) {
         <label for="description">Description</label>
         <textarea id="description" data-id={item.id} key={`${item.id}-description`} name="description" onKeyup={changeFn}>{item.description || ""}</textarea>
       </div>
-
-      {/*
-      <div className="formField buttons">
-        <button>Save</button>
-      </div>
-      */}
     </fragment>
   )
 }
 
-export default Item
+export default Details

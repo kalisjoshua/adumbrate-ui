@@ -1,9 +1,9 @@
 import {h, Component} from "preact";
 
-import "./App.css";
-import Info from "./Info"
-import Item from "./Item"
-import Tree from "./Tree"
+import "./Planning.css";
+import Details from "../components/Details"
+import Layout from "../components/Layout"
+import Tree from "../components/Tree"
 
 import decorate from "../lib/decorate"
 import dataLib, {testData} from "../lib/data"
@@ -32,7 +32,7 @@ function AddItem ({fn}) {
   )
 }
 
-class component extends Component {
+class Planning extends Component {
   constructor (props) {
     super(props)
 
@@ -114,44 +114,36 @@ class component extends Component {
       : "app-columns__one"
 
     return (
-      <section className="App">
-        <header className="App-header">
-          <div className="container">
-            <h1 className="App-title">Adumbrate</h1>
+      <Layout className="app-container-fluid">
+        <div className={columns}>
+          <div>
+            {!this.state.data.tree.length
+              ? null
+              : (<Tree
+                  data={this.state.data}
+                  drag={this.dragProps}
+                  register={(node) => this.registry[node.id] = node}
+                  select={(e) => this.itemSelect(e)} />)}
+
+            <AddItem fn={(title) => {this.state.data.add({title})}} />
           </div>
-        </header>
 
-        <main className="container">
-          <div className={columns}>
-            <div className="app--main">
-              {!this.state.data.tree.length
-                ? (<Info />)
-                : (<Tree
-                    data={this.state.data}
-                    drag={this.dragProps}
-                    register={(node) => this.registry[node.id] = node}
-                    select={(e) => this.itemSelect(e)} />)}
-
-              <AddItem fn={(title) => {this.state.data.add({title})}} />
-            </div>
-
-            <div className="app--info">
-              <Item item={item} update={this.itemUpdate.bind(this)} />
-            </div>
+          <div className="app--info">
+            <Details item={item} update={this.itemUpdate.bind(this)} />
           </div>
-        </main>
+        </div>
 
-        <footer>
+        <div className="planning-footer">
           <div className="container">
             <ul className="dataLinks">
               <li><span className="link-like" onClick={this.testData}>Load testing data</span></li>
               <li><span className="link-like" onClick={this.emptyData}>Empty localStorage</span></li>
             </ul>
           </div>
-        </footer>
-      </section>
+        </div>
+      </Layout>
     )
   }
 }
 
-export default component;
+export default Planning;

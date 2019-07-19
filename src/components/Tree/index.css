@@ -1,5 +1,6 @@
 .tree {
   margin: 0;
+  margin-left: 4ex;
   padding: 0;
 }
 
@@ -18,7 +19,7 @@
   border-right: 0;
   cursor: pointer;
   display: flex;
-  padding: 4px 1ex;
+  padding: 4px 1ex 4px 0;
   transition: box-shadow 300ms;
 }
 

@@ -1,0 +1,74 @@
+
+/* Application Header */
+
+.app-header {
+  background-color: #222;
+  color: white;
+  height: 4ex;
+  margin: 0;
+  margin-bottom: 1ex;
+  padding: 3ex;
+  position: relative;
+  text-align: center;
+  z-index: 9;
+}
+
+.app-header:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+/* Application Main Content */
+
+.app-container-fluid {
+  margin: 0 auto;
+  padding: 0 2ex;
+}
+
+.app-container-content {
+  margin: 0 auto;
+  max-width: 100ex;
+}
+
+.app-main {
+  margin-top: 6ex;
+  position: relative;
+  z-index: 1;
+}
+
+a,
+.link-like {
+  color: #444;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+a:hover,
+.link-like:hover {
+  color: black;
+  text-decoration: none;
+}
+
+
+/* Application Main Menu */
+
+.app-menu {
+  background: gainsboro;
+  color: #444;
+  display: flex;
+  margin: 0;
+  padding: 1ex;
+  text-align: left;
+}
+
+.app-menu li {
+  display: inline-block;
+  padding: 1ex;
+}
+
+.app-menu li:last-of-type {
+  flex-grow: 1;
+  text-align: right;
+}
