@@ -3,14 +3,6 @@
   padding: 0;
 }
 
-.collapse-closed > .tree {
-  display: none;
-}
-
-.collapse-closed .tree--icon__collapse {
-  background: blue;
-}
-
 .tree .tree {
   list-style-type: none;
   margin: 0 0 0 3ex;
@@ -24,13 +16,15 @@
   border-radius: 4px 0 0 4px;
   border-left: 0;
   border-right: 0;
+  cursor: pointer;
   display: flex;
   padding: 4px 1ex;
   transition: box-shadow 300ms;
 }
 
-.tree--title.drop-child:not(.isDragging) {border-bottom: 1ex solid blue;}
-.tree--title.drop-sibling:not(.isDragging) {border-top: 1ex solid orange;}
+.tree--title.drop-after:not(.isDragging) {border-bottom: 1ex solid blue;}
+.tree--title.drop-before:not(.isDragging) {border-top: 1ex solid blue;}
+.tree--title.drop-child:not(.isDragging) {border-bottom: 1ex solid orange;}
 
 .tree--title small {
   color: gainsboro;

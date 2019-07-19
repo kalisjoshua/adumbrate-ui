@@ -10,6 +10,4 @@ function isDescendent (a, b) {
   return related
 }
 
-export {
-  isDescendent,
-}
+export default isDescendent

@@ -3,7 +3,9 @@ import {h} from "preact"
 import Estimate from "./Estimate"
 import Icon from "./Icons"
 
-const add = (node, event) => {
+const challenge = "Are you sure you want to delete this part of the breakdown?"
+
+function add (node, event) {
   const title = prompt("Title")
 
   event.stopPropagation()
@@ -11,13 +13,10 @@ const add = (node, event) => {
   title && node.add({title})
 }
 
-const confirm = () =>
-  window.confirm("Are you sure you want to delete this part of the breakdown?")
-
-const remove = (node, event) => {
+function remove (node, event) {
   event.stopPropagation()
 
-  confirm() && node.remove()
+  window.confirm(challenge) && node.remove()
 }
 
 function Title ({drag, node, onClick, toggle}) {

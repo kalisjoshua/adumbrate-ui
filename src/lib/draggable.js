@@ -1,4 +1,11 @@
-import {isDescendent} from "./util"
+import isDescendent from "./isDescendent"
+import modifierKeys from "./modifierKeys"
+
+const classes = [
+  "before",
+  "after",
+  "child",
+]
 
 const draggableDefaults = {
   callback: () => {},
@@ -6,6 +13,9 @@ const draggableDefaults = {
   classHovered: "isHovered",
   dataTransferEffect: "move",
 }
+
+const removeClasses = (list) =>
+  list.remove.apply(list, classes.map((x) => `drop-${x}`))
 
 function draggableElement (element, options) {
   const {callback, dataTransferEffect, classActive, classHovered, store} = {
@@ -19,8 +29,11 @@ function draggableElement (element, options) {
 
   function drop (e) {
     const target = findDraggable(e.target)
+    const position = target
+      .getAttribute("class")
+      .match(/drop-([^\s]+)/)[1]
 
-    callback(store.activeElement, target)
+    callback(store.activeElement, target, position)
     e.stopPropagation()
     element.ondragexit(e)
 
@@ -38,8 +51,7 @@ function draggableElement (element, options) {
   function hover (e) {
     const target = findDraggable(e.target)
 
-    // TODO: make these CSS classes config values
-    target.classList.remove("drop-sibling", "drop-child")
+    removeClasses(target.classList)
     target.classList.add(`drop-${dropPosition(e, target)}`)
 
     e.dataTransfer.dropEffect = dataTransferEffect
@@ -73,8 +85,7 @@ function draggableElement (element, options) {
         target.classList[action](classHovered)
       }
 
-      // TODO: make these CSS classes config values
-      target.classList.remove("drop-sibling", "drop-child")
+      removeClasses(target.classList)
     }
   }
 
@@ -116,9 +127,7 @@ function dropPosition (e, target) {
 
   const midpoint = offset + target.offsetTop + ~~(target.offsetHeight / 2)
 
-  return e.y < midpoint
-    ? "sibling"
-    : "child"
+  return modifierKeys(e) ? classes[2] : e.y > midpoint ? classes[1] : classes[0]
 }
 
 function findDraggable (node) {

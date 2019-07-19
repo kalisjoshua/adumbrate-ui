@@ -2,19 +2,27 @@ import {h} from "preact"
 
 import "./index.css"
 
-import Leaf from "./Leaf"
+import Title from "./Title"
 
 function Tree ({data, drag, register, select}) {
 
-  return (data.tree && data.tree.length)
-    ? (
+  return !(data.tree && data.tree.length)
+    ? null
+    : (
       <ol className="tree">
-        {data.tree.map((node) => (
-          <Leaf {...{drag, node, register, select}} />
-        ))}
+        {data.tree
+          .map((node) => {
+            register(node)
+
+            return (
+              <li>
+                <Title {...{drag, node, onClick() {select(node)}}} />
+                <Tree {...{drag, register, select}} data={node} />
+              </li>
+            )
+          })}
       </ol>
     )
-    : null
 }
 
 export default Tree

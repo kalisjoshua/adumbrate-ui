@@ -1,12 +1,22 @@
 function decorate (node, parent, notify = notifyFn.bind(null, node)) {
   Object.defineProperties(node, {
     add: {
-      // add a new item to the collection
-      value: (obj, sibling) => {
-        const p = (sibling ? parent : node)
+      // add or move an item in/to the collection
+      value: (obj, position) => {
+        const subject = position === "child" ? node : (parent || node)
+        const target = obj.remove ? extract(obj.remove()) : obj
 
-        p.tree.push(decorate(extract(obj), p, notify))
-        notify("add", obj)
+        const index = !position
+          ? subject.tree.length
+          : subject.tree.indexOf(node) + +(position === "after")
+
+        subject.tree = [
+          ...subject.tree.slice(0, index),
+          decorate(target, subject, notify),
+          ...subject.tree.slice(index),
+        ]
+
+        notify("add", target)
       }
     },
     aggregate: {
@@ -85,7 +95,6 @@ function extract (obj) {
 }
 
 function notifyFn (context, event, arg) {
-  console.log("notify fired")
   context.root.listeners
     .forEach((fn) => fn({arg, context, event}))
 }
