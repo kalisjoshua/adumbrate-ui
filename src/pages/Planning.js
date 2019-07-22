@@ -53,13 +53,6 @@ class Planning extends Component {
 
       this.registry[id] = this.state.selected = dataLib.lookup(id)
     }
-
-    this.testData = () => {
-      this.initializeData(testData)
-    }
-    this.emptyData = () => {
-      this.initializeData({})
-    }
   }
 
   dropHandler (source, target, position) {
@@ -74,12 +67,6 @@ class Planning extends Component {
       this.registry[target.dataset.id]
         .add(this.registry[source.dataset.id], position)
     }
-  }
-
-  initializeData (data) {
-    this.setState({data: dataLib.update(data)}, () => {
-      this.state.data.listen(this.listener)
-    })
   }
 
   itemSelect (node) {
@@ -106,12 +93,15 @@ class Planning extends Component {
     this.setState({data: context})
   }
 
-  render () {
-    const item = this.registry[(this.state.selected || {}).id]
+  loadData (data) {
+    this.setState({data: dataLib.update(data)}, () => {
+      this.state.data.listen(this.listener)
+    })
+  }
 
-    const columns = this.state.selected
-      ? "app-columns__two"
-      : "app-columns__one"
+  render () {
+    const columns = `app-columns__${this.state.selected ? "two" : "one"}`
+    const item = this.registry[(this.state.selected || {}).id]
 
     return (
       <Layout className="app-container-fluid">
@@ -137,8 +127,8 @@ class Planning extends Component {
         <div className="planning-footer">
           <div className="container">
             <ul className="dataLinks">
-              <li><span className="link-like" onClick={this.testData}>Load testing data</span></li>
-              <li><span className="link-like" onClick={this.emptyData}>Empty localStorage</span></li>
+              <li><span className="link-like" onClick={() => this.loadData(testData)}>Load testing data</span></li>
+              <li><span className="link-like" onClick={() => this.loadData({})}>Empty localStorage</span></li>
             </ul>
           </div>
         </div>
