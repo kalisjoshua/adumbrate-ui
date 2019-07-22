@@ -5,7 +5,6 @@ import Details from "../components/Details"
 import Layout from "../components/Layout"
 import Tree from "../components/Tree"
 
-import decorate from "../lib/decorate"
 import dataLib, {testData} from "../lib/data"
 import {draggableElement} from "../lib/draggable"
 import isRelated from "../lib/isRelated"
@@ -13,7 +12,6 @@ import isRelated from "../lib/isRelated"
 // TODO:
 //    - integrate persistence of some kind; e.g. firebase
 //    - add/edit (admin) general schema for items; additional fields to show in Details section
-//    - persist selected between page refresh using window.location.hash
 //    - collapse hierarchies; keep in mind displaying persisted selected items
 
 function AddItem ({fn}) {
@@ -47,8 +45,14 @@ class Planning extends Component {
 
     this.registry = {}
 
-    this.state.data = decorate(dataLib.read())
+    this.state.data = dataLib.read()
     this.state.data.listen(this.listener)
+
+    if (window.location.hash) {
+      const id = window.location.hash.slice(1)
+
+      this.registry[id] = this.state.selected = dataLib.lookup(id)
+    }
 
     this.testData = () => {
       this.initializeData(dataLib.update(testData))
@@ -73,23 +77,17 @@ class Planning extends Component {
   }
 
   initializeData (data) {
-    this.setState({data: decorate(data)}, () => {
+    this.setState({data: dataLib.update(data)}, () => {
       this.state.data.listen(this.listener)
     })
   }
 
   itemSelect (node) {
-    const selector = "selected"
+    const {hash} = window.location
 
-    const currentElement = document.querySelector(`.${selector}`)
-    const nextElement = document.querySelector(`[data-id="${node.id}"]`)
-
-    if (currentElement === nextElement) {
-      currentElement.classList.toggle(selector)
-    } else {
-      currentElement && currentElement.classList.remove(selector)
-      nextElement.classList.add(selector)
-    }
+    window.location.hash = (!hash || hash !== `#${node.id}`)
+      ? `${node.id}`
+      : ''
 
     this.setState({
       selected: (this.state.selected || {}).id === node.id
@@ -125,7 +123,8 @@ class Planning extends Component {
                   data={this.state.data}
                   drag={this.dragProps}
                   register={(node) => this.registry[node.id] = node}
-                  select={(e) => this.itemSelect(e)} />)}
+                  select={(e) => this.itemSelect(e)}
+                  selected={this.state.selected || {}} />)}
 
             <AddItem fn={(title) => {this.state.data.add({title})}} />
           </div>

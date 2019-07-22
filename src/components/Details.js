@@ -13,7 +13,7 @@ function Details ({item, update}) {
 
   return (
     <fragment>
-      <h2>Item Info</h2>
+      <h2 className="text-right">Details</h2>
 
       <div className="formField">
         <label for="id">ID</label>

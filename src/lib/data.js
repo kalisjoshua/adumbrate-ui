@@ -1,8 +1,8 @@
-import decorate from "./decorate"
+import decorate, {extract} from "./decorate"
 
 const defaultData = {tree: []}
 const key = "adumbrate"
-const testData = decorate({
+const testData = {
   tree: [
     {
       title: "Step 1 - Steal the underpants",
@@ -27,25 +27,44 @@ const testData = decorate({
       title: "Step 3 - PROFIT!"
     }
   ]
-})
+}
 
 let store
+let index
+
+function buildIndex (obj) {
+  index = {}
+
+  const walk = ({tree}) => tree
+    .forEach((node) => {
+      index[node.id] = node
+
+      if (node.tree) walk(node)
+    })
+
+  walk(obj)
+
+  return obj
+}
+
+function lookup (id) {
+
+  return index[id]
+}
 
 function read () {
-  store = localStorage.getItem(key)
 
-  return store
-    ? JSON.parse(store)
-    : update()
+  return store || update(JSON.parse(localStorage.getItem(key)))
 }
 
 function update (data) {
-  localStorage.setItem(key, JSON.stringify(data || defaultData))
+  store = decorate(buildIndex(extract(data || defaultData)))
+  localStorage.setItem(key, JSON.stringify(store))
 
   return read()
 }
 
 read()
 
-export default ({read, update})
+export default ({lookup, read, update})
 export {testData}

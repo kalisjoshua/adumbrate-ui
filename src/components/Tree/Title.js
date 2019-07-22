@@ -19,10 +19,14 @@ function remove (node, event) {
   window.confirm(challenge) && node.remove()
 }
 
-function Title ({drag, node, onClick, toggle}) {
+function Title ({drag, isSelected, node, onClick, toggle}) {
+  const cssClass = [
+    "tree--title",
+    isSelected ? "selected" : ""
+  ].join(" ")
 
   return (
-    <div className="tree--title" {...drag} data-id={node.id} onClick={onClick}>
+    <div className={cssClass} {...drag} data-id={node.id} onClick={onClick}>
       <span className="tree--label">{node.title} <small>({node.id})</small></span>
       <Estimate node={node} />
       <Icon.Add onClick={(e) => add(node, e)} />

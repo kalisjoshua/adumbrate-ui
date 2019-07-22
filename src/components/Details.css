@@ -9,10 +9,10 @@
 }
 
 .planning--details h2 {
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #aaa;
   color: #444;
   font-size: 120%;
-  margin-top: 0.7ex;
+  margin-top: 1ex;
 }
 
 .planning--details .formField + .formField {
@@ -42,4 +42,8 @@
 
 .planning--details input[disabled] {
   color: black;
+}
+
+.text-right {
+  text-align: right;
 }

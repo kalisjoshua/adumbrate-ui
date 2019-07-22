@@ -36,13 +36,7 @@
   color: #444;
 }
 
-.isHovered {
-  background: gainsboro;
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.tree--title:hover {
-  border-color: gainsboro;
+.tree--title:not(.selected):hover {
   box-shadow: 0 0 20px 0px #999;
 }
 
