@@ -35,7 +35,7 @@ let index
 function buildIndex (obj) {
   index = {}
 
-  const walk = ({tree}) => tree
+  const walk = ({...defaultData, tree = []}) => tree
     .forEach((node) => {
       index[node.id] = node
 

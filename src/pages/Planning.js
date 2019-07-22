@@ -55,10 +55,10 @@ class Planning extends Component {
     }
 
     this.testData = () => {
-      this.initializeData(dataLib.update(testData))
+      this.initializeData(testData)
     }
     this.emptyData = () => {
-      this.initializeData(dataLib.update())
+      this.initializeData({})
     }
   }
 
