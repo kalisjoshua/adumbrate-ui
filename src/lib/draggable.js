@@ -1,4 +1,4 @@
-import isDescendent from "./isDescendent"
+import isRelated from "./isRelated"
 import modifierKeys from "./modifierKeys"
 
 const classes = [
@@ -78,8 +78,7 @@ function draggableElement (element, options) {
         target.draggable &&
         target && target.classList &&
         store.activeElement &&
-        store.activeElement !== target &&
-        !isDescendent(store.activeElement, target)
+        !isRelated(store.activeElement, target)
 
       if (allow) {
         target.classList[action](classHovered)

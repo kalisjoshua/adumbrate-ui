@@ -6,7 +6,7 @@ function decorate (node, parent, notify = notifyFn.bind(null, node)) {
         const subject = position === "child" ? node : (parent || node)
         const target = obj.remove ? extract(obj.remove()) : obj
 
-        const index = !position
+        const index = (!position || position === "child")
           ? subject.tree.length
           : subject.tree.indexOf(node) + +(position === "after")
 

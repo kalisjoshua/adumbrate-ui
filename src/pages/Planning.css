@@ -8,10 +8,6 @@
   grid-template-columns: auto 36%;
 }
 
-.app-columns__one .app--info {
-  display: none;
-}
-
 .addItem {
   display: inline-block;
   font-size: 100%;

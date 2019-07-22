@@ -8,11 +8,13 @@ import Tree from "../components/Tree"
 import decorate from "../lib/decorate"
 import dataLib, {testData} from "../lib/data"
 import {draggableElement} from "../lib/draggable"
-import isDescendent from "../lib/isDescendent"
+import isRelated from "../lib/isRelated"
 
 // TODO:
 //    - integrate persistence of some kind; e.g. firebase
-//    - add/edit (admin) general schema for items
+//    - add/edit (admin) general schema for items; additional fields to show in Details section
+//    - persist selected between page refresh using window.location.hash
+//    - collapse hierarchies; keep in mind displaying persisted selected items
 
 function AddItem ({fn}) {
   const attrs = {
@@ -61,7 +63,7 @@ class Planning extends Component {
     //   - infinite looping,
     //   - worm holes, and
     //   - tearing of the space time continuum!
-    if (isDescendent(source.parentNode, target.parentNode) || source.parentNode === target.parentNode) {
+    if (isRelated(source.parentNode, target.parentNode)) {
       alert("Will not rip space time!")
       target.classList.remove("isHovered")
     } else {
@@ -116,7 +118,7 @@ class Planning extends Component {
     return (
       <Layout className="app-container-fluid">
         <div className={columns}>
-          <div>
+          <div className="planning--tree">
             {!this.state.data.tree.length
               ? null
               : (<Tree
@@ -128,7 +130,7 @@ class Planning extends Component {
             <AddItem fn={(title) => {this.state.data.add({title})}} />
           </div>
 
-          <div className="app--info">
+          <div className="planning--details">
             <Details item={item} update={this.itemUpdate.bind(this)} />
           </div>
         </div>
