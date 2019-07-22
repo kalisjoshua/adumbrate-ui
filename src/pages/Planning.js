@@ -14,24 +14,6 @@ import isRelated from "../lib/isRelated"
 //    - add/edit (admin) general schema for items; additional fields to show in Details section
 //    - collapse hierarchies; keep in mind displaying persisted selected items
 
-function AddItem ({fn}) {
-  const attrs = {
-    className: "addItem",
-    onKeyup({target, which}) {
-      if (which === 13) {
-        fn(target.value)
-        target.value = ""
-        setTimeout(() => {document.querySelector(`.${attrs.className}`).focus()}, 1)
-      }
-    },
-    placeholder: "Add Item",
-  }
-
-  return (
-    <input {...attrs} />
-  )
-}
-
 class Planning extends Component {
   constructor (props) {
     super(props)
@@ -41,6 +23,7 @@ class Planning extends Component {
       store: {},
     })
 
+    this.addItem = this.addItem.bind(this)
     this.listener = this.listener.bind(this)
 
     this.registry = {}
@@ -52,6 +35,13 @@ class Planning extends Component {
       const id = window.location.hash.slice(1)
 
       this.registry[id] = this.state.selected = dataLib.lookup(id)
+    }
+  }
+
+  addItem ({target, which}) {
+    if (which === 13) {
+      this.state.data.add({title: target.value})
+      target.value = ""
     }
   }
 
@@ -114,7 +104,7 @@ class Planning extends Component {
                   select={(e) => this.itemSelect(e)}
                   selected={this.state.selected || {}} />)}
 
-            <AddItem fn={(title) => {this.state.data.add({title})}} />
+            <input className="addItem" onKeyup={this.addItem} placeholder="Add Item" />
           </div>
 
           <div className="planning--details">
