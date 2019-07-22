@@ -10,6 +10,8 @@ import {draggableElement} from "../lib/draggable"
 import isRelated from "../lib/isRelated"
 
 // TODO:
+//    - deleting the selected item does not close the Details for that item
+//    - "Add Item" ICON adds a sibling when it should add a child
 //    - integrate persistence of some kind; e.g. firebase
 //    - add/edit (admin) general schema for items; additional fields to show in Details section
 //    - collapse hierarchies; keep in mind displaying persisted selected items
@@ -26,15 +28,13 @@ class Planning extends Component {
     this.addItem = this.addItem.bind(this)
     this.listener = this.listener.bind(this)
 
-    this.registry = {}
-
     this.state.data = dataLib.read()
     this.state.data.listen(this.listener)
 
     if (window.location.hash) {
       const id = window.location.hash.slice(1)
 
-      this.registry[id] = this.state.selected = dataLib.lookup(id)
+      this.state.selected = dataLib.lookup(id)
     }
   }
 
@@ -52,8 +52,8 @@ class Planning extends Component {
     } else if (isRelated(source.parentNode, target.parentNode)) {
       alert("Attempting to tear spacetime is not going to be tollerated!")
     } else {
-      this.registry[target.dataset.id]
-        .add(this.registry[source.dataset.id], position)
+      dataLib.lookup(target.dataset.id)
+        .add(dataLib.lookup(source.dataset.id), position)
     }
   }
 
@@ -72,13 +72,21 @@ class Planning extends Component {
   }
 
   itemUpdate ({dataset: {id}, name, value}) {
-    this.registry[id][name] = value
+    dataLib.lookup(id)[name] = value
     this.setState(this.state.data)
   }
 
   listener ({context, event}) {
     dataLib.update(context)
-    this.setState({data: context})
+
+    const isOrphaned = !dataLib.lookup(this.state.selected.id)
+    const isViewing = window.location.hash.slice(1) === this.state.selected.id
+
+    const selected = isViewing && isOrphaned
+      ? null
+      : this.state.selected
+
+    this.setState({data: context, selected})
   }
 
   loadData (data) {
@@ -88,19 +96,17 @@ class Planning extends Component {
   }
 
   render () {
-    const columns = `app-columns__${this.state.selected ? "two" : "one"}`
-    const item = this.registry[(this.state.selected || {}).id]
+    const selectedItem = dataLib.lookup((this.state.selected || {}).id)
 
     return (
       <Layout className="app-container-fluid">
-        <div className={columns}>
+        <div className={`app-columns__${selectedItem ? "two" : "one"}`}>
           <div className="planning--tree">
             {!this.state.data.tree.length
               ? null
               : (<Tree
                   data={this.state.data}
                   drag={this.dragProps}
-                  register={(node) => this.registry[node.id] = node}
                   select={(e) => this.itemSelect(e)}
                   selected={this.state.selected || {}} />)}
 
@@ -108,7 +114,7 @@ class Planning extends Component {
           </div>
 
           <div className="planning--details">
-            <Details item={item} update={this.itemUpdate.bind(this)} />
+            <Details item={selectedItem} update={this.itemUpdate.bind(this)} />
           </div>
         </div>
 
