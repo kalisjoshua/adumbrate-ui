@@ -56,13 +56,11 @@ class Planning extends Component {
   }
 
   dropHandler (source, target, position) {
-    // Check for dragging a parent onto a child to prevent:
-    //   - infinite looping,
-    //   - worm holes, and
-    //   - tearing of the space time continuum!
-    if (isRelated(source.parentNode, target.parentNode)) {
-      alert("Will not rip space time!")
-      target.classList.remove("isHovered")
+    // Check for dragging a parent onto itself or a child
+    if (source.parentNode === target.parentNode) {
+      // do nothing!
+    } else if (isRelated(source.parentNode, target.parentNode)) {
+      alert("Attempting to tear spacetime is not going to be tollerated!")
     } else {
       this.registry[target.dataset.id]
         .add(this.registry[source.dataset.id], position)
