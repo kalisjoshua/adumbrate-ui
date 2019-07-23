@@ -10,9 +10,7 @@ import {draggableElement} from "../lib/draggable"
 import isRelated from "../lib/isRelated"
 
 // TODO:
-//    - deleting the selected item does not close the Details for that item
-//    - "Add Item" ICON adds a sibling when it should add a child
-//    - integrate persistence of some kind; e.g. firebase
+//    - integrate persistence of some kind; e.g. firebase, OR GitHub Projects :D
 //    - add/edit (admin) general schema for items; additional fields to show in Details section
 //    - collapse hierarchies; keep in mind displaying persisted selected items
 
@@ -32,9 +30,7 @@ class Planning extends Component {
     this.state.data.listen(this.listener)
 
     if (window.location.hash) {
-      const id = window.location.hash.slice(1)
-
-      this.state.selected = dataLib.lookup(id)
+      this.state.selected = dataLib.lookup(window.location.hash.slice(1))
     }
   }
 
@@ -77,16 +73,21 @@ class Planning extends Component {
   }
 
   listener ({context, event}) {
-    dataLib.update(context)
+    const data = dataLib.update(context)
 
-    const isOrphaned = !dataLib.lookup(this.state.selected.id)
-    const isViewing = window.location.hash.slice(1) === this.state.selected.id
+    const selectedId = this.selectedId()
+    const isOrphaned = !dataLib.lookup(selectedId)
+    const isViewing = window.location.hash.slice(1) === selectedId
 
     const selected = isViewing && isOrphaned
       ? null
       : this.state.selected
 
-    this.setState({data: context, selected})
+    this.setState({data, selected}, (...args) => {
+      // this.state.data is a new instance of the tree so this.listener needs to
+      // be re-registered in order for things to continue working
+      this.state.data.listen(this.listener)
+    })
   }
 
   loadData (data) {
@@ -95,8 +96,13 @@ class Planning extends Component {
     })
   }
 
+  selectedId () {
+
+    return (this.state.selected || {}).id
+  }
+
   render () {
-    const selectedItem = dataLib.lookup((this.state.selected || {}).id)
+    const selectedItem = dataLib.lookup(this.selectedId())
 
     return (
       <Layout className="app-container-fluid">
@@ -107,8 +113,8 @@ class Planning extends Component {
               : (<Tree
                   data={this.state.data}
                   drag={this.dragProps}
-                  select={(e) => this.itemSelect(e)}
-                  selected={this.state.selected || {}} />)}
+                  isSelected={({id}) => id === (selectedItem || {}).id}
+                  select={(e) => this.itemSelect(e)} />)}
 
             <input className="addItem" onKeyup={this.addItem} placeholder="Add Item" />
           </div>

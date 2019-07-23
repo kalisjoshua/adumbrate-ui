@@ -10,7 +10,7 @@ function add (node, event) {
 
   event.stopPropagation()
 
-  title && node.add({title})
+  title && node.add({title}, "child")
 }
 
 function remove (node, event) {
@@ -22,7 +22,7 @@ function remove (node, event) {
 function Title ({drag, isSelected, node, onClick, toggle}) {
   const cssClass = [
     "tree--title",
-    isSelected ? "selected" : ""
+    isSelected(node) ? "selected" : ""
   ].join(" ")
 
   return (

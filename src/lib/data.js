@@ -58,8 +58,8 @@ function read () {
 }
 
 function update (data) {
-  store = decorate(buildIndex(extract(data || defaultData)))
-  localStorage.setItem(key, JSON.stringify(store))
+  store = buildIndex(decorate(extract(data || defaultData)))
+  localStorage.setItem(key, JSON.stringify(extract(store)))
 
   return read()
 }
