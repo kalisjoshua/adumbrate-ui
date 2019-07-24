@@ -1,4 +1,3 @@
-import isRelated from "./isRelated"
 import modifierKeys from "./modifierKeys"
 
 const classes = [
@@ -10,7 +9,6 @@ const classes = [
 const draggableDefaults = {
   callback: () => {},
   classActive: "isDragging",
-  classHovered: "isHovered",
   dataTransferEffect: "move",
 }
 
@@ -18,7 +16,7 @@ const removeClasses = (list) =>
   list.remove.apply(list, classes.map((x) => `drop-${x}`))
 
 function draggableElement (element, options) {
-  const {callback, dataTransferEffect, classActive, classHovered, store} = {
+  const {callback, dataTransferEffect, classActive, store} = {
     ...draggableDefaults,
     ...options,
   }
@@ -70,29 +68,11 @@ function draggableElement (element, options) {
     e.dataTransfer.setData("text/html", "")
   }
 
-  function toggle (action) {
-
-    return function (e) {
-      const target = findDraggable(e.target)
-      const allow =
-        target.draggable &&
-        target && target.classList &&
-        store.activeElement &&
-        !isRelated(store.activeElement, target)
-
-      if (allow) {
-        target.classList[action](classHovered)
-      }
-
-      removeClasses(target.classList)
-    }
-  }
-
   element.draggable = true
   element.ondragstart = start
-  element.ondragenter = toggle("add")
   element.ondragover = hover
-  element.ondragexit = toggle("remove")
+  element.ondragenter = element.ondragexit = (e) =>
+    removeClasses(findDraggable(e.target).classList)
   element.ondrop = drop
   element.ondragend = end
 

@@ -10,6 +10,7 @@
 }
 
 .isDragging {
+  background: gainsboro;
   opacity: 0.5;
 }
 
@@ -20,9 +21,17 @@
   transition: box-shadow 300ms;
 }
 
-.tree--title.drop-after:not(.isDragging) {border-bottom: 3ex solid blue;}
-.tree--title.drop-before:not(.isDragging) {border-top: 3ex solid blue;}
-.tree--title.drop-child:not(.isDragging) {border-bottom: 3ex solid orange;}
+.tree--title.drop-after:not(.isDragging) {border-bottom: 3ex solid gainsboro;}
+.tree--title.drop-before:not(.isDragging) {border-top: 3ex solid gainsboro;}
+
+.tree--title.drop-child:not(.isDragging) {
+  border-bottom: 3ex solid gainsboro;
+  margin-left: 3ex;
+}
+
+.tree--title.drop-child:not(.isDragging) .tree--label {
+  margin-left: -2ex;
+}
 
 .tree--title small {
   color: gainsboro;

@@ -69,7 +69,9 @@ class Planning extends Component {
 
   itemUpdate ({dataset: {id}, name, value}) {
     dataLib.lookup(id)[name] = value
-    this.setState(this.state.data)
+    this.setState(this.state.data, () => {
+      dataLib.update(this.state.data)
+    })
   }
 
   listener ({context, event}) {
@@ -113,7 +115,7 @@ class Planning extends Component {
               : (<Tree
                   data={this.state.data}
                   drag={this.dragProps}
-                  isSelected={({id}) => id === (selectedItem || {}).id}
+                  isSelected={({id}) => id === this.selectedId()}
                   select={(e) => this.itemSelect(e)} />)}
 
             <input className="addItem" onKeyup={this.addItem} placeholder="Add Item" />

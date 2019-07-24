@@ -20,6 +20,13 @@ function Details ({item, update}) {
         <input disabled="true" id="id" data-id={item.id} key={`${item.id}-id`} name="id" value={item.id} />
       </div>
 
+      {(isRoot) && (
+        <div className="formField">
+          <label for="repo">Repository</label>
+          <input id="repo" data-id={item.repo} key={`${item.id}-repo`} name="repo" onKeyup={changeFn} value={item.repo} />
+        </div>
+      )}
+
       <div className="formField">
         <label for="title">Title</label>
         <input id="title" data-id={item.id} key={`${item.id}-title`} name="title" onKeyup={changeFn} value={item.title} />
