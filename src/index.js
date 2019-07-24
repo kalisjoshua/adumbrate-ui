@@ -1,6 +1,7 @@
 import {h, render} from "preact"
 
 import "./index.css"
+
 import About from "./pages/About"
 import Planning from "./pages/Planning"
 

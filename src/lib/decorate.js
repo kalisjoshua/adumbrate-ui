@@ -16,7 +16,7 @@ function decorate (node, parent, notify = notifyFn.bind(null, node)) {
           ...subject.tree.slice(index),
         ]
 
-        notify("add", target)
+        notify(position ? "move" : "add", target)
       }
     },
     aggregate: {
@@ -83,9 +83,9 @@ function decorate (node, parent, notify = notifyFn.bind(null, node)) {
 function extract (obj) {
   const props = Object.keys(obj).join()
   // eslint-disable-next-line no-new-func
-  const exec = new Function("obj", `const {${props}} = obj; return {${props}}`)
+  const fn = new Function("obj", `const {${props}} = obj; return {${props}}`)
 
-  const result = exec(obj)
+  const result = fn(obj)
 
   if (result.tree && result.tree.length) {
     result.tree = result.tree.map(extract)

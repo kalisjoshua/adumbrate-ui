@@ -18,6 +18,7 @@ class Planning extends Component {
   constructor (props) {
     super(props)
 
+    // setup draggable item properties; will be applied to draggable elements
     this.dragProps = draggableElement(Object.create(null, {}), {
       callback: this.dropHandler.bind(this),
       store: {},
@@ -27,6 +28,7 @@ class Planning extends Component {
     this.listener = this.listener.bind(this)
 
     this.state.data = dataLib.read()
+    // listen for changes to the data
     this.state.data.listen(this.listener)
 
     if (window.location.hash) {
@@ -35,6 +37,7 @@ class Planning extends Component {
   }
 
   addItem ({target, which}) {
+    // "submit" when the user presses the "enter" key press
     if (which === 13) {
       this.state.data.add({title: target.value})
       target.value = ""
@@ -56,20 +59,24 @@ class Planning extends Component {
   itemSelect (node) {
     const {hash} = window.location
 
+    // enable toggle of selected item
     window.location.hash = (!hash || hash !== `#${node.id}`)
       ? `${node.id}`
       : ''
 
     this.setState({
-      selected: (this.state.selected || {}).id === node.id
+      selected: this.selectedId() === node.id
         ? null
         : node
     })
   }
 
   itemUpdate ({dataset: {id}, name, value}) {
+    // update the specific item
     dataLib.lookup(id)[name] = value
+    // persist the change to the state of the React component
     this.setState(this.state.data, () => {
+      // persiste the change to the data store
       dataLib.update(this.state.data)
     })
   }
@@ -92,6 +99,7 @@ class Planning extends Component {
     })
   }
 
+  // mostly for dev purposes; to load/reload data to test against quickly
   loadData (data) {
     this.setState({data: dataLib.update(data)}, () => {
       this.state.data.listen(this.listener)
@@ -110,22 +118,21 @@ class Planning extends Component {
       <Layout className="app-container-fluid">
         <div className={`app-columns__${selectedItem ? "two" : "one"}`}>
           <div className="planning--tree">
-            {!this.state.data.tree.length
-              ? null
-              : (<Tree
-                  data={this.state.data}
-                  drag={this.dragProps}
-                  isSelected={({id}) => id === this.selectedId()}
-                  select={(e) => this.itemSelect(e)} />)}
+            <Tree
+              data={this.state.data}
+              drag={this.dragProps}
+              isSelected={({id}) => id === this.selectedId()}
+              select={(e) => this.itemSelect(e)} />
 
             <input className="addItem" onKeyup={this.addItem} placeholder="Add Item" />
           </div>
 
-          <div className="planning--details">
+          {selectedItem && (
             <Details item={selectedItem} update={this.itemUpdate.bind(this)} />
-          </div>
+          )}
         </div>
 
+        {/* mostly for dev purposes; to load/reload data to test against quickly */}
         <div className="planning-footer">
           <div className="container">
             <ul className="dataLinks">

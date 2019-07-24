@@ -32,19 +32,10 @@ const testData = {
 let store
 let index
 
-function buildIndex (obj) {
+function buildIndex (data) {
   index = {}
 
-  const walk = ({...defaultData, tree = []}) => tree
-    .forEach((node) => {
-      index[node.id] = node
-
-      if (node.tree) walk(node)
-    })
-
-  walk(obj)
-
-  return obj
+  walk({...defaultData, ...data})
 }
 
 function lookup (id) {
@@ -58,10 +49,18 @@ function read () {
 }
 
 function update (data) {
-  store = buildIndex(decorate(extract(data || defaultData)))
-  localStorage.setItem(key, JSON.stringify(extract(store)))
+  const raw = extract(data || defaultData)
+
+  store = decorate(raw)
+  localStorage.setItem(key, JSON.stringify(raw))
+
+  buildIndex(store)
 
   return read()
+}
+
+function walk ({tree}) {
+  tree.forEach((node) => {index[node.id] = node; node.tree && walk(node)})
 }
 
 read()

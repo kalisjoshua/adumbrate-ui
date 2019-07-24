@@ -3,10 +3,11 @@ import {h} from "preact"
 import "./Icons.css"
 
 const Icon = ({label, onClick, title, type}) => (
-  <span
-    className={`tree--icon__${type}`}
-    onClick={onClick}
-    title={title}>{label}</span>
+  <span {...{
+    className: `tree--icon__${type}`,
+    onClick,
+    title,
+  }}>{label}</span>
 )
 
 Icon.Add = ({onClick}) => (
@@ -15,10 +16,6 @@ Icon.Add = ({onClick}) => (
 
 Icon.Collapse = ({onClick}) => (
   <Icon label="..." onClick={onClick} title="Collapse Children" type="collapse" />
-)
-
-Icon.Drag = ({onClick}) => (
-  <Icon label="::" onClick={onClick} title="Drag Item" type="drag" />
 )
 
 Icon.Estimate = ({onClick, value}) => (

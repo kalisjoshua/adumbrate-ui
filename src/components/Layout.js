@@ -12,7 +12,7 @@ function Layout ({children, className}) {
           <ul className="app-menu">
             <li><a href="/about">About</a></li>
             <li><a href="/planning">Planning</a></li>
-            <li><strong>Adumbrate</strong></li>
+            <li><strong title="A tool for planning work.">Adumbrate</strong></li>
           </ul>
         </div>
       </header>

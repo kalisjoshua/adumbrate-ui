@@ -1,18 +1,16 @@
-import {h, fragment} from "preact";
+import {h} from "preact";
 
 import "./Details.css"
 
 import debounce from "../lib/debounce"
 
 function Details ({item, update}) {
-  if (!item) return
-
   const isRoot = item.parent.id === item.root.id
 
   const changeFn = debounce(({target}) => update(target))
 
   return (
-    <fragment>
+    <aside className="planning--details">
       <h2 className="text-right">Details</h2>
 
       <div className="formField">
@@ -41,7 +39,7 @@ function Details ({item, update}) {
         <label for="description">Description</label>
         <textarea id="description" data-id={item.id} key={`${item.id}-description`} name="description" onKeyup={changeFn}>{item.description || ""}</textarea>
       </div>
-    </fragment>
+    </aside>
   )
 }
 
