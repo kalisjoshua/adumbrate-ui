@@ -11,7 +11,6 @@ import isRelated from "../lib/isRelated"
 
 // TODO:
 //    - integrate persistence of some kind; e.g. firebase, OR GitHub Projects :D
-//    - add/edit (admin) general schema for items; additional fields to show in Details section
 //    - collapse hierarchies; keep in mind displaying persisted selected items
 
 class Planning extends Component {
@@ -25,6 +24,7 @@ class Planning extends Component {
     })
 
     this.addItem = this.addItem.bind(this)
+    this.itemUpdate = this.itemUpdate.bind(this)
     this.listener = this.listener.bind(this)
 
     this.state.data = dataLib.read()
@@ -71,11 +71,11 @@ class Planning extends Component {
     })
   }
 
-  itemUpdate ({dataset: {id}, name, value}) {
+  itemUpdate (key, prop, value) {
     // update the specific item
-    dataLib.lookup(id)[name] = value
+    dataLib.lookup(key)[prop] = value
     // persist the change to the state of the React component
-    this.setState(this.state.data, () => {
+    this.setState({data: dataLib.read()}, () => {
       // persiste the change to the data store
       dataLib.update(this.state.data)
     })
@@ -128,11 +128,11 @@ class Planning extends Component {
           </div>
 
           {selectedItem && (
-            <Details item={selectedItem} update={this.itemUpdate.bind(this)} />
+            <Details item={selectedItem} update={this.itemUpdate} />
           )}
         </div>
 
-        {/* mostly for dev purposes; to load/reload data to test against quickly */}
+        {/* mostly for dev; to quickly load/reload data to test against */}
         <div className="planning-footer">
           <div className="container">
             <ul className="dataLinks">

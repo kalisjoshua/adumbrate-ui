@@ -4,10 +4,18 @@ import "./Details.css"
 
 import debounce from "../lib/debounce"
 
-function Details ({item, update}) {
-  const isRoot = item.parent.id === item.root.id
+const attrs = (item, id, noValue) => ({
+  "data-id": item.id,
+  id,
+  key: `${item.id}-${id}`,
+  name: id,
+  [noValue ? (void 0) : "value"]: item[id],
+})
+const eventArgs = ({target: {dataset, name, value}}) => ([dataset.id, name, value])
 
-  const changeFn = debounce(({target}) => update(target))
+function Details ({item, update}) {
+  const changeFn = debounce((event) => update(...eventArgs(event)))
+  const isRoot = item.parent.id === item.root.id
 
   return (
     <aside className="planning--details">
@@ -15,29 +23,29 @@ function Details ({item, update}) {
 
       <div className="formField">
         <label for="id">ID</label>
-        <input disabled="true" id="id" data-id={item.id} key={`${item.id}-id`} name="id" value={item.id} />
+        <input disabled {...attrs(item, "id")} />
       </div>
 
       {(isRoot) && (
         <div className="formField">
           <label for="repo">Repository</label>
-          <input id="repo" data-id={item.repo} key={`${item.id}-repo`} name="repo" onKeyup={changeFn} value={item.repo} />
+          <input {...attrs(item, "repo")} onKeyup={changeFn} />
         </div>
       )}
 
       <div className="formField">
         <label for="title">Title</label>
-        <input id="title" data-id={item.id} key={`${item.id}-title`} name="title" onKeyup={changeFn} value={item.title} />
+        <input {...attrs(item, "title")} onKeyup={changeFn} />
       </div>
 
       <div className="formField">
         <label for="estimate">Estimate</label>
-        <input disabled={isRoot} id="estimate" data-id={item.id} key={`${item.id}-estimate`} min="0" max="50" name="estimate" onChange={changeFn} type="number" value={item.estimate} />
+        <input disabled={isRoot} {...attrs(item, "estimate")} min="0" max="50" onChange={changeFn} onKeyup={changeFn} type="number" />
       </div>
 
       <div className="formField">
         <label for="description">Description</label>
-        <textarea id="description" data-id={item.id} key={`${item.id}-description`} name="description" onKeyup={changeFn}>{item.description || ""}</textarea>
+        <textarea {...attrs(item, "description", true)} onKeyup={changeFn}>{item.description || ""}</textarea>
       </div>
     </aside>
   )

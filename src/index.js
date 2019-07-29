@@ -7,6 +7,8 @@ import Planning from "./pages/Planning"
 
 import registerServiceWorker from "./registerServiceWorker"
 
+let root
+
 const routing = {
   "/about": About,
   "/planning": Planning,
@@ -14,5 +16,9 @@ const routing = {
 
 const Page = routing[window.location.pathname] || routing["/about"]
 
-render(<Page />, document.getElementById("root"))
+function init() {
+  root = render(<Page />, document.body, root)
+}
+
+init()
 registerServiceWorker()
